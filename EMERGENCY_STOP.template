@@ -1,0 +1,2 @@
+# Remove .template extension to activate emergency stop
+# The automation will check for this file and stop immediately

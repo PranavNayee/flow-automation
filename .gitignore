@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Environment
+.env
+config.local.yaml
+
+# Data
+data/queue.db
+data/queue.db-journal
+data/downloads/*
+!data/downloads/.gitkeep
+data/projects/*
+!data/projects/.gitkeep
+data/screenshots/*
+!data/screenshots/.gitkeep
+
+# Logs
+logs/*.log
+!logs/.gitkeep
+
+# Playwright
+.playwright/
+playwright-state/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# YouTube credentials
+client_secret*.json
+token.pickle

@@ -1,0 +1,20 @@
+[
+  {
+    "scene_id": "intro_01",
+    "prompt": "Dynamic typography animation spelling out 'Welcome' in bold modern font, colorful particles swirling around the text, black background",
+    "aspect_ratio": "16:9",
+    "duration": 5
+  },
+  {
+    "scene_id": "nature_01",
+    "prompt": "A serene Japanese zen garden with raked sand patterns, a small stream with stepping stones, cherry blossom petals floating in the air",
+    "aspect_ratio": "16:9",
+    "duration": 5
+  },
+  {
+    "scene_id": "space_01",
+    "prompt": "View of Earth from space, rotating slowly, stars twinkling in the background, aurora borealis visible on the night side",
+    "aspect_ratio": "16:9",
+    "duration": 5
+  }
+]

@@ -1,0 +1,220 @@
+flow-automation/
+│
+├── 📄 README.md                      # Complete documentation
+├── 📄 QUICKSTART.md                  # 15-minute setup guide
+├── 📄 LICENSE                        # MIT License with disclaimer
+├── 📄 requirements.txt               # Python dependencies
+├── 📄 .env.example                   # Environment template
+├── 📄 .gitignore                     # Git ignore rules
+├── 📄 config.yaml                    # Main configuration
+├── 📄 selectors.yaml                 # UI selectors (UPDATE THIS!)
+│
+├── 📁 src/                           # Source code
+│   ├── __init__.py
+│   ├── queue_manager.py              # SQLite job queue with resume
+│   ├── flow_driver.py                # Playwright browser automation
+│   ├── downloader.py                 # Video download handler
+│   ├── health_check.py               # UI selector validation
+│   ├── credit_tracker.py             # Usage monitoring
+│   ├── editor.py                     # FFmpeg video editing
+│   ├── script_writer.py              # LLM prompt generation
+│   ├── dashboard.py                  # Streamlit monitoring UI
+│   ├── uploader.py                   # YouTube API with AI disclosure
+│   └── utils/
+│       ├── __init__.py
+│       ├── config.py                 # Configuration loader
+│       ├── logger.py                 # Logging setup
+│       └── delays.py                 # Rate limiting & human delays
+│
+├── 📁 scripts/                       # Executable scripts
+│   ├── init_db.py                    # Initialize project
+│   ├── import_prompts.py             # Load jobs from CSV/JSON
+│   └── run_automation.py             # Main automation loop
+│
+├── 📁 examples/                      # Example prompt files
+│   ├── prompts.csv                   # CSV format example
+│   └── prompts.json                  # JSON format example
+│
+├── 📁 data/                          # Generated at runtime
+│   ├── queue.db                      # SQLite database
+│   ├── credit_tracker.json           # Usage tracking
+│   ├── downloads/                    # Downloaded videos
+│   ├── projects/                     # Edited final videos
+│   └── screenshots/                  # Error debugging screenshots
+│
+├── 📁 logs/                          # Generated at runtime
+│   └── flow_automation.log           # Application logs
+│
+└── 📁 playwright-state/              # Generated at runtime
+    └── [Browser profile data]        # Persistent login session
+
+MODULES OVERVIEW
+================
+
+1. queue_manager.py
+   - SQLite-based job queue
+   - States: pending, running, completed, failed, retry
+   - Resume-safe: crashed jobs auto-reset
+   - Import from CSV/JSON
+
+2. flow_driver.py
+   - Playwright automation for Flow
+   - Persistent browser profile (login once)
+   - Human-like typing and delays
+   - Screenshot on every error
+   - CAPTCHA/warning detection
+
+3. downloader.py
+   - Downloads generated videos
+   - Multiple methods: URL, link, button
+   - Resumes interrupted downloads
+   - Renames by scene_id
+
+4. health_check.py
+   - Validates UI selectors before run
+   - Auto-generates update guide if broken
+   - Essential vs. optional selector checks
+   - Warning detection (CAPTCHA, rate limits)
+
+5. credit_tracker.py
+   - Tracks monthly generation usage
+   - Enforces credit limits
+   - Persists across sessions
+   - Monthly rollover handling
+
+6. editor.py
+   - FFmpeg video stitching
+   - Add background music
+   - Burn subtitles
+   - Video metadata extraction
+
+7. script_writer.py
+   - OpenAI or Anthropic LLM
+   - Generate scene prompts from topics
+   - Refine prompts with feedback
+   - Configurable style and length
+
+8. dashboard.py
+   - Streamlit real-time monitoring
+   - Queue visualization
+   - Video preview
+   - Approve/reject workflow
+
+9. uploader.py
+   - YouTube Data API v3
+   - OAuth authentication
+   - Automatic AI content disclosure flag
+   - Upload quota tracking
+
+SAFETY FEATURES
+===============
+
+✓ Rate limiting (hourly + daily)
+✓ Credit tracking & limits
+✓ Human-like delays (randomized)
+✓ CAPTCHA detection & stop
+✓ Warning detection & stop
+✓ Emergency stop file
+✓ Screenshot on every error
+✓ Persistent browser profile (no password automation)
+✓ Resume-safe queue (no duplicate work)
+✓ Health checks before run
+
+CONFIGURATION FILES
+===================
+
+config.yaml
+- Video settings (aspect ratio, quality)
+- Editor settings (codec, CRF)
+- LLM settings (provider, model)
+- YouTube upload defaults
+
+selectors.yaml ⚠️ UPDATE WHEN FLOW UI CHANGES
+- All UI element selectors
+- Timeouts and wait durations
+- Organized by page section
+- Comment with last verified date
+
+.env (from .env.example)
+- Rate limits (MAX_GENERATIONS_PER_HOUR, etc.)
+- API keys (OPENAI_API_KEY, etc.)
+- Paths (BROWSER_PROFILE_PATH, DATABASE_PATH)
+- Safety settings
+
+WORKFLOW
+========
+
+1. Prepare Prompts
+   CSV/JSON → import_prompts.py → SQLite queue
+
+2. Run Automation
+   run_automation.py:
+   - Health check selectors
+   - For each pending job:
+     * Navigate to Flow
+     * Check warnings
+     * Enter prompt
+     * Generate video
+     * Download file
+     * Apply rate limits
+   - Resume-safe (crash recovery)
+
+3. Monitor Progress
+   streamlit run src/dashboard.py
+   - Real-time status
+   - Video previews
+   - Queue management
+
+4. Edit Videos (optional)
+   editor.py:
+   - Stitch scenes
+   - Add audio/subtitles
+   - Export final video
+
+5. Upload to YouTube (optional)
+   uploader.py:
+   - OAuth authentication
+   - AI disclosure flag (automatic)
+   - Upload with metadata
+
+SETUP CHECKLIST
+===============
+
+□ Python 3.11+ installed
+□ FFmpeg installed (brew install ffmpeg)
+□ Created virtual environment
+□ Installed requirements.txt
+□ Installed Playwright browser (playwright install chromium)
+□ Copied .env.example to .env
+□ Configured rate limits in .env (START LOW!)
+□ Updated selectors.yaml with current Flow UI
+□ Ran scripts/init_db.py
+□ Tested with single job
+□ Reviewed README.md safety section
+
+⚠️ BEFORE FIRST RUN
+====================
+
+1. Open Flow in browser: https://labs.google/flow
+2. Inspect UI with DevTools (F12)
+3. Verify/update these selectors in selectors.yaml:
+   - main.prompt_textarea
+   - main.prompt_submit_button
+   - main.generating_indicator
+   - main.generation_complete
+   - main.download_button
+4. Update "Last verified" date in selectors.yaml
+5. Start with 1 test job
+6. Monitor the entire first generation
+
+IMPORTANT WARNINGS
+==================
+
+⚠️ This tool MAY VIOLATE Google's Terms of Service
+⚠️ Account suspension is a real risk
+⚠️ Use only with accounts you can afford to lose
+⚠️ Start with very conservative rate limits (5/hour)
+⚠️ Flow's UI changes frequently - be ready to update selectors
+⚠️ YouTube requires AI content disclosure - it's automatic but verify
+⚠️ Stop immediately if you see CAPTCHA or warnings
+

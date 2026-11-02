@@ -1,0 +1,47 @@
+# Main configuration for Flow Automation Tool
+# Copy to config.local.yaml to override defaults without changing version control
+
+# Video settings
+video:
+  default_aspect_ratio: "16:9"  # Options: 16:9, 9:16, 1:1 (check Flow UI for current options)
+  default_duration: 5  # seconds
+  default_quality: "high"  # low, medium, high (if Flow supports)
+
+# Download settings
+download:
+  timeout_seconds: 900  # 15 minutes max wait per video
+  check_interval_seconds: 2  # How often to check if generation is complete
+  
+# Editor settings
+editor:
+  default_output_format: "mp4"
+  default_codec: "libx264"
+  default_audio_codec: "aac"
+  default_crf: 23  # Quality: lower = better (18-28 recommended)
+  
+# Script writer settings
+script_writer:
+  llm_provider: "openai"  # openai, anthropic
+  model: "gpt-4o"  # or "claude-3-5-sonnet-20241022"
+  max_scenes: 10
+  scene_duration: 5  # seconds per scene
+  
+# YouTube upload settings
+youtube:
+  category_id: 22  # 22 = People & Blogs, see https://developers.google.com/youtube/v3/docs/videoCategories/list
+  privacy_status: "private"  # private, unlisted, public
+  made_for_kids: false
+  self_declared_made_for_kids: false
+  
+# Health check settings
+health_check:
+  enabled: true
+  test_selectors_before_run: true
+  screenshot_on_failure: true
+  
+# Safety settings
+safety:
+  stop_on_captcha: true
+  stop_on_warning: true
+  stop_on_unusual_activity: true
+  emergency_stop_file: "./EMERGENCY_STOP"  # Create this file to stop immediately

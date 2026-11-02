@@ -1,0 +1,61 @@
+# UI Selectors for Google Flow
+# UPDATE THIS FILE when Flow's UI changes
+# Last verified: [DATE - update this when you verify]
+
+# INSTRUCTIONS FOR UPDATING:
+# 1. Open Flow in a browser with DevTools (F12)
+# 2. Use the Element Picker (Ctrl+Shift+C / Cmd+Shift+C)
+# 3. Click on each UI element and copy its selector
+# 4. Prefer data-testid or aria-label over CSS classes
+# 5. Test each selector in the Console: document.querySelector("selector")
+
+# Main page elements
+main:
+  # Project management
+  new_project_button: 'button:has-text("New project"), button[aria-label="New project"]'
+  project_name_input: 'input[placeholder*="project" i]'
+  project_list: '.project-list'
+  select_project: 'div[data-project-id="{project_id}"]'  # {project_id} will be replaced
+  
+  # Prompt input
+  prompt_textarea: 'div[aria-label="What do you want to create?"], div.ProseMirror[contenteditable="true"]'
+  prompt_submit_button: 'button[aria-label="Start generation"]'
+  
+  # Settings
+  aspect_ratio_dropdown: 'select[aria-label*="aspect" i], button[aria-label*="aspect" i]'
+  aspect_ratio_option: 'option[value="{ratio}"], div[data-value="{ratio}"]'
+  duration_input: 'input[aria-label*="duration" i]'
+  quality_dropdown: 'select[aria-label*="quality" i]'
+  
+  # Generation status
+  generating_indicator: '.generating, [aria-label*="generating" i], .spinner'
+  generation_complete: '.complete, [aria-label*="complete" i], .done'
+  generation_error: '.error, [aria-label*="error" i], .failed'
+  
+  # Video preview and download
+  video_preview: 'video'
+  download_button: 'button[aria-label*="download" i], a[download]'
+  video_thumbnail: 'img[alt*="generated" i]'
+  
+  # Alerts and warnings
+  # captcha: '#recaptcha, .g-recaptcha, iframe[src*="recaptcha"]'  # Disabled - false positive on Flow
+  warning_message: '.warning, [role="alert"]'
+  error_message: '.error-message, [role="alertdialog"]'
+  rate_limit_warning: '[data-warning="rate-limit"], :has-text("too many requests")'
+  
+  # Account and credits
+  credit_counter: '[data-testid="credit-count"], .credits-remaining'
+  account_menu: 'button[aria-label*="account" i], button[aria-label*="profile" i]'
+  
+# Timeouts (milliseconds)
+timeouts:
+  navigation: 30000  # 30 seconds
+  element_visible: 10000  # 10 seconds
+  generation_complete: 600000  # 10 minutes max per generation
+  download: 60000  # 1 minute for download to start
+  
+# Wait strategies
+waits:
+  after_click: 1000  # Wait 1s after clicking
+  after_input: 500  # Wait 0.5s after typing
+  between_actions: 2000  # Wait 2s between major actions
